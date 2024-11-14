@@ -1,6 +1,6 @@
 import db from '../db/postgres.js';
 import { v4 as uuidv4 } from 'uuid';
-import client from '../elastic/elasticClient.js';
+import elasticClient from '../elastic/elasticClient.js';
 
 const create = async (videoData) => {
   const id = uuidv4();
@@ -9,11 +9,16 @@ const create = async (videoData) => {
     [id, videoData.title, videoData.description, videoData.thumbnailUrl, videoData.videoUrl, videoData.category, videoData.uploader]
   );
 
-  await client.index({
-    index: 'videos',
-    id,
-    document: { ...videoData, id, views: 0, likes: 0, upload_date: new Date() }
-  });
+  try {
+    const response = await elasticClient.index({
+      index: 'videos',
+      id,
+      document: { ...videoData, id, views: 0, likes: 0, upload_date: new Date() }
+    });
+    console.log('Elasticsearch response:', response);
+  } catch (error) {
+    console.error('Elasticsearch error:', error);
+  }
 
   return { id };
 };
@@ -24,16 +29,26 @@ const update = async (id, videoData) => {
     [videoData.title, videoData.description, videoData.category, id]
   );
 
-  await client.update({
-    index: 'videos',
-    id,
-    doc: videoData
-  });
+  try {
+    await elasticClient.update({
+      index: 'videos',
+      id,
+      doc: videoData
+    });
+    console.log('Elasticsearch response:', response);
+  } catch (error) {
+    console.error('Elasticsearch error:', error);
+  }
 };
 
 const remove = async (id) => {
   await db.none('DELETE FROM videos WHERE id = $1', [id]);
-  await client.delete({ index: 'videos', id });
+  try {
+    await elasticClient.delete({ index: 'videos', id });
+  } catch (error) {
+    console.error('Elasticsearch error:', error);
+  }
+
 };
 
 export default { create, update, remove };

@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "1bddfa37-eba2-4264-b1f3-08140dd3937f",
+		"name": "CQRS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31363995"
+	},
+	"item": [
+		{
+			"name": "videos",
+			"item": [
+				{
+					"name": "get query elasticsearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/query/videos/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"query",
+								"videos",
+								"search"
+							],
+							"query": [
+								{
+									"key": "search_query",
+									"value": "Lorem",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get command postgres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/api/command/videos"
+					},
+					"response": []
+				},
+				{
+					"name": "create command postgre",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Quantum Computing Revolution\",\r\n    \"video_url\": \"https://www.youtube.com/embed/qmgA_WejI8w?si=1exk98bEfqxkuvec\",\r\n    \"category\": \"Science\",\r\n    \"uploader\": \"Uploader_5\",\r\n    \"thumbnail_url\": \"https://i.ytimg.com/vi/Xu1wA7CfhQg/hqdefault.jpg?sqp=-oaymwExCOADEI4CSFryq4qpAyMIARUAAIhCGAHwAQH4Af4JgALQBYoCDAgAEAEYZSBcKFcwDw==&rs=AOn4CLCvyIEXSwJBMHcnZZYh6d75OLeOkA\",\r\n    \"description\": \"Lorem ipsum dolor, sit amet consectetur adipisicing elit\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/api/command/videos"
+					},
+					"response": []
+				},
+				{
+					"name": "update command postgre",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Understanding Quantum Physics 1\",\r\n    \"video_url\": \"https://www.youtube.com/embed/qmgA_WejI8w?si=1exk98bEfqxkuvec\",\r\n    \"category\": \"Edication\",\r\n    \"uploader\": \"Uploader_1\",\r\n    \"thumbnail_url\": \"https://i.ytimg.com/vi/Xu1wA7CfhQg/hqdefault.jpg?sqp=-oaymwExCOADEI4CSFryq4qpAyMIARUAAIhCGAHwAQH4Af4JgALQBYoCDAgAEAEYZSBcKFcwDw==&rs=AOn4CLCvyIEXSwJBMHcnZZYh6d75OLeOkA\",\r\n    \"description\": \"This is the description for Sample Video Title\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/api/command/videos/342412ed-9cb4-432c-b9d1-4a7b4bf6cd87"
+					},
+					"response": []
+				},
+				{
+					"name": "delete command postgre",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3000/api/command/videos/6c7a796d-8bab-4554-b9fa-1a0d3f452853"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Elasticsearch",
+			"item": [
+				{
+					"name": "Serach VIdeos elasticsearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:9200/videos/_search"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Videos Mapping elasticsearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:9200/videos/_mapping"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Videos elasticsearch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Sample Video\",\r\n  \"description\": \"A sample video description\",\r\n  \"thumbnailUrl\": \"http://example.com/thumbnail.jpg\",\r\n  \"videoUrl\": \"http://example.com/video.mp4\",\r\n  \"category\": \"Sample\",\r\n  \"uploader\": \"UploaderName\",\r\n  \"views\": 0,\r\n  \"likes\": 0,\r\n  \"upload_date\": \"2024-01-01T00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9200/videos/_doc/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Videos Mapping elasticsearch",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:9200/videos"
+					},
+					"response": []
+				},
+				{
+					"name": "Videos Mapping Edit elasticsearch",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"settings\": {\r\n    \"number_of_shards\": 1,\r\n    \"number_of_replicas\": 0\r\n  },\r\n  \"mappings\": {\r\n    \"properties\": {\r\n      \"id\": { \"type\": \"keyword\" },\r\n      \"title\": { \"type\": \"text\" },\r\n      \"description\": { \"type\": \"text\" },\r\n      \"thumbnail_url\": { \"type\": \"text\" },\r\n      \"video_url\": { \"type\": \"text\" },\r\n      \"category\": { \"type\": \"keyword\" },\r\n      \"uploader\": { \"type\": \"text\" },\r\n      \"views\": { \"type\": \"integer\" },\r\n      \"likes\": { \"type\": \"integer\" },\r\n      \"upload_date\": { \"type\": \"date\" }\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9200/videos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "View All Index elasticsearch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/_cat/indices?v",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cat",
+						"indices"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status Cluster Elasticsearch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/_cluster/health?pretty",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cluster",
+						"health"
+					],
+					"query": [
+						{
+							"key": "pretty",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status Cat Shard elasticsearch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/_cat/shards?v",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cat",
+						"shards"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setting Cluster elasticsearch",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"persistent\": {\r\n    \"cluster.routing.allocation.disk.watermark.high\": \"95%\",\r\n    \"cluster.routing.allocation.disk.watermark.low\": \"90%\",\r\n    \"cluster.routing.allocation.disk.watermark.flood_stage\": \"98%\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9200/_cluster/settings"
+			},
+			"response": []
+		}
+	]
+}

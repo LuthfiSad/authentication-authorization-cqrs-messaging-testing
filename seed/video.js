@@ -1,5 +1,6 @@
-import db from '../db/postgres'; // Sesuaikan dengan path ke file database
-import elasticClient from '../elastic/elasticClient'; // Sesuaikan dengan path ke file elastic client
+import db from '../db/postgres.js'; // Sesuaikan dengan path ke file database
+import elasticClient from '../elastic/elasticClient.js'; // Sesuaikan dengan path ke file elastic client
+import { v4 as uuidv4 } from 'uuid';
 
 // Fungsi untuk membuat teks acak
 const categories = [
@@ -50,24 +51,6 @@ const videos = [
   "https://www.youtube.com/embed/2cBHu2450TM?si=eLnISYriMe_jgJJ2",
 ];
 
-// Fungsi untuk membuat video data
-const sampleVideos = Array.from({ length: 100 }, (_, i) => ({
-  id: `video_${i + 1}`,
-  title: generateRandomText(),
-  videoUrl: videos[Math.floor(Math.random() * videos.length)],
-  category: categories[Math.floor(Math.random() * categories.length)],
-  uploader: uploaders[Math.floor(Math.random() * uploaders.length)],
-  views: Math.floor(Math.random() * 10000000),
-  likes: Math.floor(Math.random() * 5000000),
-  uploadDate: new Date(
-    2023,
-    Math.floor(Math.random() * 12),
-    Math.floor(Math.random() * 28) + 1
-  ),
-  thumbnailUrl: thumbnails[Math.floor(Math.random() * thumbnails.length)],
-  description: `This is the description for Sample Video Title ${i + 1}. ${cutRandomText()}`,
-}));
-
 const generateRandomText = () => {
   const phrases = [
     "Understanding Quantum Physics",
@@ -105,6 +88,24 @@ const cutRandomText = () => {
 
   return randomText.substring(0, Math.floor(Math.random() * randomText.length + 10));
 };
+
+// Fungsi untuk membuat video data
+const sampleVideos = Array.from({ length: 100 }, (_, i) => ({
+  id: uuidv4(),
+  title: generateRandomText(),
+  videoUrl: videos[Math.floor(Math.random() * videos.length)],
+  category: categories[Math.floor(Math.random() * categories.length)],
+  uploader: uploaders[Math.floor(Math.random() * uploaders.length)],
+  views: Math.floor(Math.random() * 10000000),
+  likes: Math.floor(Math.random() * 5000000),
+  uploadDate: new Date(
+    2023,
+    Math.floor(Math.random() * 12),
+    Math.floor(Math.random() * 28) + 1
+  ),
+  thumbnailUrl: thumbnails[Math.floor(Math.random() * thumbnails.length)],
+  description: `This is the description for Sample Video Title ${i + 1}. ${cutRandomText()}`,
+}));
 
 // Fungsi untuk mengisi data ke dalam database dan Elasticsearch
 const seedDatabase = async () => {

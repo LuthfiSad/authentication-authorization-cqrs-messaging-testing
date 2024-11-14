@@ -2,6 +2,11 @@ import db from '../db/postgres.js';
 import { v4 as uuidv4 } from 'uuid';
 import elasticClient from '../elastic/elasticClient.js';
 
+const get = async () => {
+  const result = await db.any('SELECT * FROM videos');
+  return result;
+};
+
 const create = async (videoData) => {
   const id = uuidv4();
   await db.none(
@@ -51,4 +56,4 @@ const remove = async (id) => {
 
 };
 
-export default { create, update, remove };
+export default { create, update, remove, get };

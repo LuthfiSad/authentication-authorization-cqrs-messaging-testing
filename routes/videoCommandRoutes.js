@@ -4,6 +4,7 @@ import { validateCreateVideoInput, validateUpdateVideoInput } from '../middlewar
 
 const commandRouter = express.Router();
 
+commandRouter.get('/videos', commandController.getVideos);
 commandRouter.post('/videos', validateCreateVideoInput, commandController.createVideo);
 commandRouter.put('/videos/:id', validateUpdateVideoInput, commandController.updateVideo);
 commandRouter.delete('/videos/:id', commandController.deleteVideo);

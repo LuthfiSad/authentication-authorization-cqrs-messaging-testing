@@ -1,5 +1,14 @@
 import * as videoService from '../services/videoCommandService.js';
 
+export const getVideos = async (req, res) => {
+  try {
+    const videos = await videoService.getVideos();
+    res.status(200).json(videos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const createVideo = async (req, res) => {
   try {
     const video = await videoService.createVideo(req.body);

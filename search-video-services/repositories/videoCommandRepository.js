@@ -1,6 +1,6 @@
 import db from '../db/postgres.js';
 import { v4 as uuidv4 } from 'uuid';
-import elasticClient from '../elastic/elasticClient.js';
+import elasticClient from '../../search-video-services/elastic/elasticClient.js';
 
 const get = async () => {
   const result = await db.any('SELECT * FROM videos');

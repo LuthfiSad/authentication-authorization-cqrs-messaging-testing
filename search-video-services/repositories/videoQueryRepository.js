@@ -1,4 +1,4 @@
-import elasticClient from '../elastic/elasticClient.js';
+import elasticClient from '../../search-video-services/elastic/elasticClient.js';
 
 export const search = async (query) => {
   const searchParams = {

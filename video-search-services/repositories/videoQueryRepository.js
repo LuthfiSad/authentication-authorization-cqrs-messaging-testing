@@ -60,9 +60,6 @@ export const searchByTitleForRecommendation = async (query) => {
 
   try {
     const response = await elasticClient.search(searchParams);
-
-    // Log respons dari Elasticsearch untuk memastikan `body` ada
-    console.log(response, "bejir");
     return response.hits.hits.map(hit => hit._source);
   } catch (error) {
     console.error("Elasticsearch query error:", error);

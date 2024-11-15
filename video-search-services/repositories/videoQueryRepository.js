@@ -75,7 +75,7 @@ export const searchById = async (id) => {
     return response._source;
   } catch (error) {
     console.error("Elasticsearch query error:", error);
-    return null;
+    throw new Error("Error querying Elasticsearch");
   }
 };
 

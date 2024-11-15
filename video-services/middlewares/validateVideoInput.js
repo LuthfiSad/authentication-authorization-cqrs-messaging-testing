@@ -1,4 +1,4 @@
-import { searchById } from "../repositories/videoQueryRepository.js";
+import { searchById } from "../services/videoCommandService.js";
 
 export const validateCreateVideoInput = (req, res, next) => {
   const { title, description, thumbnail_url, video_url, category, uploader } = req.body;
@@ -19,6 +19,7 @@ export const validateUpdateVideoInput = async (req, res, next) => {
   }
 
   const video = await searchById(id)
+  console.log(video);
   
   if (!video) {
     return res.status(404).json({ error: 'Video not found' });

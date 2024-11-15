@@ -1,4 +1,4 @@
-import elasticClient from '../../search-video-services/elastic/elasticClient.js';
+import elasticClient from '../elastic/elasticClient.js';
 
 export const search = async (query) => {
   const searchParams = {
@@ -82,3 +82,14 @@ export const searchById = async (id) => {
   }
 };
 
+export async function handleMessage(message) {
+  const { action, data } = message;
+
+  if (action === 'CREATE') {
+    await elasticClient.index({ index: 'videos', id: data.id, document: data });
+  } else if (action === 'UPDATE') {
+    await elasticClient.update({ index: 'videos', id: data.id, doc: data });
+  } else if (action === 'DELETE') {
+    await elasticClient.delete({ index: 'videos', id: data.id });
+  }
+}

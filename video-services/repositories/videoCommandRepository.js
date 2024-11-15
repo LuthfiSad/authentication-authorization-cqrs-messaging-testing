@@ -1,6 +1,6 @@
 import db from '../db/postgres.js';
 import { v4 as uuidv4 } from 'uuid';
-import elasticClient from '../../search-video-services/elastic/elasticClient.js';
+import { sendToQueue } from '../messages/rabbitmqClient.js';
 
 const get = async () => {
   const result = await db.any('SELECT * FROM videos');
@@ -14,16 +14,8 @@ const create = async (videoData) => {
     [id, videoData.title, videoData.description, videoData.thumbnailUrl, videoData.videoUrl, videoData.category, videoData.uploader]
   );
 
-  try {
-    const response = await elasticClient.index({
-      index: 'videos',
-      id,
-      document: { ...videoData, id, views: 0, likes: 0, upload_date: new Date() }
-    });
-    console.log('Elasticsearch response:', response);
-  } catch (error) {
-    console.error('Elasticsearch error:', error);
-  }
+  const message = { action: 'CREATE', data: { ...videoData, id, views: 0, likes: 0, uploadDate: new Date() } };
+  await sendToQueue('video_updates', message);
 
   return { id };
 };
@@ -34,26 +26,15 @@ const update = async (id, videoData) => {
     [videoData.title, videoData.description, videoData.category, id]
   );
 
-  try {
-    await elasticClient.update({
-      index: 'videos',
-      id,
-      doc: videoData
-    });
-    console.log('Elasticsearch response:', response);
-  } catch (error) {
-    console.error('Elasticsearch error:', error);
-  }
+  const message = { action: 'UPDATE', data: { id, ...videoData } };
+  await sendToQueue('video_updates', message);
 };
 
 const remove = async (id) => {
   await db.none('DELETE FROM videos WHERE id = $1', [id]);
-  try {
-    await elasticClient.delete({ index: 'videos', id });
-  } catch (error) {
-    console.error('Elasticsearch error:', error);
-  }
-
+  
+  const message = { action: 'DELETE', data: { id } };
+  await sendToQueue('video_updates', message);
 };
 
 export default { create, update, remove, get };

@@ -1,5 +1,5 @@
 import db from '../video-services/db/postgres.js'; // Sesuaikan dengan path ke file database
-import elasticClient from '../search-video-services/elastic/elasticClient.js'; // Sesuaikan dengan path ke file elastic client
+import elasticClient from '../video-search-services/elastic/elasticClient.js'; // Sesuaikan dengan path ke file elastic client
 import { v4 as uuidv4 } from 'uuid';
 
 // Fungsi untuk membuat teks acak

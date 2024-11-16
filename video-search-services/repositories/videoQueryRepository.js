@@ -43,7 +43,7 @@ export const search = async (query) => {
 
 export const searchByTitleForRecommendation = async (query) => {
   console.log(query);
-  
+
   const searchParams = {
     index: 'videos',
     size: 30,
@@ -70,7 +70,6 @@ export const searchByTitleForRecommendation = async (query) => {
 export const searchById = async (id) => {
   try {
     const response = await elasticClient.get({ index: 'videos', id });
-    console.log({ response });
 
     return response._source;
   } catch (error) {
@@ -82,11 +81,18 @@ export const searchById = async (id) => {
 export async function handleMessage(message) {
   const { action, data } = message;
 
-  if (action === 'CREATE') {
-    await elasticClient.index({ index: 'videos', id: data.id, document: data });
-  } else if (action === 'UPDATE') {
-    await elasticClient.update({ index: 'videos', id: data.id, doc: data });
-  } else if (action === 'DELETE') {
-    await elasticClient.delete({ index: 'videos', id: data.id });
+  try {
+    if (action === 'CREATE') {
+      await elasticClient.index({ index: 'videos', id: data.id, document: data });
+    } else if (action === 'UPDATE') {
+      await elasticClient.update({ index: 'videos', id: data.id, doc: data });
+    } else if (action === 'DELETE') {
+      await elasticClient.delete({ index: 'videos', id: data.id });
+    } else {
+      throw new Error(`Unknown action: ${action}`);
+    }
+  } catch (error) {
+    console.error(`Error handling ${action} for ID ${data.id}:`, error);
+    throw error; // Rethrow error to trigger retry or DLQ logic
   }
 }

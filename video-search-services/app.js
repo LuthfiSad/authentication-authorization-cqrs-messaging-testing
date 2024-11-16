@@ -1,6 +1,6 @@
 import express from 'express';
 import queryRouter from './routes/videoQueryRoutes.js';
-import { consumeQueue } from '../messages/rabbitmqClient.js';
+import { consumeQueue } from './messages/rabbitmqClient.js';
 
 const app = express();
 app.use(express.json());

@@ -11,6 +11,7 @@ export async function consumeQueue() {
   channel.consume(queue, async (msg) => {
     if (msg !== null) {
       const message = JSON.parse(msg.content.toString());
+      console.log(message);
       await handleMessage(message);
       channel.ack(msg);
     }

@@ -18,8 +18,7 @@ export const validateUpdateVideoInput = async (req, res, next) => {
     return res.status(400).json({ error: 'Video ID is required' });
   }
 
-  const video = await searchById(id)
-  console.log(video);
+  const video = await searchById(id, req);
   
   if (!video) {
     return res.status(404).json({ error: 'Video not found' });
